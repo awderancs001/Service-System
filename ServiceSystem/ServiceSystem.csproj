@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9E6E007E-37EC-482B-B402-8B178D33DB24}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>ServiceSystem</RootNamespace>
+    <AssemblyName>ServiceSystem</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\BuildingRepository.cs" />
+    <Compile Include="Data\DatabaseHelper.cs" />
+    <Compile Include="Data\ElectricBillRepository.cs" />
+    <Compile Include="Data\MaintenanceBillRepository.cs" />
+    <Compile Include="Data\MonthlyServiceBillRepository.cs" />
+    <Compile Include="Data\InvoiceRepository.cs" />
+    <Compile Include="Data\PaymentRepository.cs" />
+    <Compile Include="Data\ReportsRepository.cs" />
+    <Compile Include="Data\SettingsRepository.cs" />
+    <Compile Include="Data\SessionManager.cs" />
+    <Compile Include="Data\UnitRepository.cs" />
+    <Compile Include="Data\UserRepository.cs" />
+    <Compile Include="Forms\ElectricForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ElectricForm.Designer.cs">
+      <DependentUpon>ElectricForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InvoiceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\InvoiceForm.Designer.cs">
+      <DependentUpon>InvoiceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MaintenanceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MaintenanceForm.Designer.cs">
+      <DependentUpon>MaintenanceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MonthlyServiceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MonthlyServiceForm.Designer.cs">
+      <DependentUpon>MonthlyServiceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ReceiveMoneyForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ReceiveMoneyForm.Designer.cs">
+      <DependentUpon>ReceiveMoneyForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ReportsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ReportsForm.Designer.cs">
+      <DependentUpon>ReportsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UnitsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UnitsForm.Designer.cs">
+      <DependentUpon>UnitsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Building.cs" />
+    <Compile Include="Models\BuildingSummaryItem.cs" />
+    <Compile Include="Models\DebtorItem.cs" />
+    <Compile Include="Models\ElectricBill.cs" />
+    <Compile Include="Models\Invoice.cs" />
+    <Compile Include="Models\MaintenanceBill.cs" />
+    <Compile Include="Models\MonthlyServiceBill.cs" />
+    <Compile Include="Models\Payment.cs" />
+    <Compile Include="Models\Unit.cs" />
+    <Compile Include="Models\UnitHistoryItem.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\ElectricForm.resx">
+      <DependentUpon>ElectricForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InvoiceForm.resx">
+      <DependentUpon>InvoiceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MaintenanceForm.resx">
+      <DependentUpon>MaintenanceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MonthlyServiceForm.resx">
+      <DependentUpon>MonthlyServiceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ReceiveMoneyForm.resx">
+      <DependentUpon>ReceiveMoneyForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ReportsForm.resx">
+      <DependentUpon>ReportsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UnitsForm.resx">
+      <DependentUpon>UnitsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\square.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\112382023_Latest NCC - 3.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\istockphoto-1037437274-612x612.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pngtree-abstract-particles-background-with-geometric-connection-concept-vector-illustration-picture-image_1233144.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\0b6dd710dafafbfd5447bd8170e774d2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\0b6dd710dafafbfd5447bd8170e774d21.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\square1.jpeg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\simple-flat-lightning-electric-power-icon-energy-and-electricity-symbol-vector.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\simple-flat-lightning-electric-power-icon-energy-and-electricity-symbol-vector1.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
