@@ -86,5 +86,10 @@ namespace ServiceSystem.Forms
         {
             new ReportsForm().ShowDialog();
         }
+
+        private void btnUserManagement_Click(object sender, EventArgs e)
+        {
+            new UserManagementForm().ShowDialog();
+        }
     }
 }

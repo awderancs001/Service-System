@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.pnTop = new System.Windows.Forms.Panel();
+            this.pblog = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.lblDate = new System.Windows.Forms.Label();
             this.lblRole = new System.Windows.Forms.Label();
@@ -49,10 +50,9 @@
             this.btnReport = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnUserManagement = new System.Windows.Forms.Button();
-            this.pblog = new System.Windows.Forms.PictureBox();
             this.pnTop.SuspendLayout();
-            this.pnBody.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pblog)).BeginInit();
+            this.pnBody.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnTop
@@ -64,21 +64,29 @@
             this.pnTop.Controls.Add(this.lblRole);
             this.pnTop.Controls.Add(this.lblCurrentUser);
             this.pnTop.ForeColor = System.Drawing.Color.White;
-            this.pnTop.Location = new System.Drawing.Point(17, 16);
-            this.pnTop.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnTop.Location = new System.Drawing.Point(13, 13);
             this.pnTop.Name = "pnTop";
-            this.pnTop.Size = new System.Drawing.Size(1273, 90);
+            this.pnTop.Size = new System.Drawing.Size(955, 73);
             this.pnTop.TabIndex = 0;
+            // 
+            // pblog
+            // 
+            this.pblog.Image = global::ServiceSystem.Properties.Resources.square;
+            this.pblog.Location = new System.Drawing.Point(145, 14);
+            this.pblog.Name = "pblog";
+            this.pblog.Size = new System.Drawing.Size(51, 50);
+            this.pblog.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pblog.TabIndex = 4;
+            this.pblog.TabStop = false;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("RudawRegular", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(23, 22);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Location = new System.Drawing.Point(17, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(157, 39);
+            this.label1.Size = new System.Drawing.Size(122, 30);
             this.label1.TabIndex = 3;
             this.label1.Text = "چوارچرای نوێ";
             // 
@@ -86,10 +94,9 @@
             // 
             this.lblDate.AutoSize = true;
             this.lblDate.Font = new System.Drawing.Font("RudawRegular", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDate.Location = new System.Drawing.Point(881, 22);
-            this.lblDate.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblDate.Location = new System.Drawing.Point(661, 18);
             this.lblDate.Name = "lblDate";
-            this.lblDate.Size = new System.Drawing.Size(38, 29);
+            this.lblDate.Size = new System.Drawing.Size(31, 23);
             this.lblDate.TabIndex = 2;
             this.lblDate.Text = "📅";
             // 
@@ -97,10 +104,9 @@
             // 
             this.lblRole.AutoSize = true;
             this.lblRole.Font = new System.Drawing.Font("RudawRegular", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRole.Location = new System.Drawing.Point(673, 50);
-            this.lblRole.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblRole.Location = new System.Drawing.Point(505, 41);
             this.lblRole.Name = "lblRole";
-            this.lblRole.Size = new System.Drawing.Size(38, 29);
+            this.lblRole.Size = new System.Drawing.Size(31, 23);
             this.lblRole.TabIndex = 1;
             this.lblRole.Text = "👤";
             // 
@@ -108,10 +114,9 @@
             // 
             this.lblCurrentUser.AutoSize = true;
             this.lblCurrentUser.Font = new System.Drawing.Font("Segoe UI Emoji", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCurrentUser.Location = new System.Drawing.Point(625, 22);
-            this.lblCurrentUser.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblCurrentUser.Location = new System.Drawing.Point(469, 18);
             this.lblCurrentUser.Name = "lblCurrentUser";
-            this.lblCurrentUser.Size = new System.Drawing.Size(39, 27);
+            this.lblCurrentUser.Size = new System.Drawing.Size(32, 21);
             this.lblCurrentUser.TabIndex = 0;
             this.lblCurrentUser.Text = "👤";
             // 
@@ -120,10 +125,9 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.Maroon;
-            this.label2.Location = new System.Drawing.Point(25, 657);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(19, 534);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(289, 35);
+            this.label2.Size = new System.Drawing.Size(224, 27);
             this.label2.TabIndex = 3;
             this.label2.Text = "Programmer: Awder Anwar";
             // 
@@ -132,10 +136,9 @@
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.Color.Maroon;
-            this.label6.Location = new System.Drawing.Point(332, 652);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label6.Location = new System.Drawing.Point(249, 530);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(197, 35);
+            this.label6.Size = new System.Drawing.Size(152, 27);
             this.label6.TabIndex = 4;
             this.label6.Text = "+9647701542773";
             // 
@@ -143,10 +146,9 @@
             // 
             this.btnRefresh.Font = new System.Drawing.Font("RudawRegular", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRefresh.ForeColor = System.Drawing.Color.Maroon;
-            this.btnRefresh.Location = new System.Drawing.Point(601, 657);
-            this.btnRefresh.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnRefresh.Location = new System.Drawing.Point(451, 534);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(132, 38);
+            this.btnRefresh.Size = new System.Drawing.Size(99, 31);
             this.btnRefresh.TabIndex = 5;
             this.btnRefresh.Text = "🔃 Refresh";
             this.btnRefresh.UseVisualStyleBackColor = true;
@@ -155,10 +157,9 @@
             // 
             this.btnLogout.Font = new System.Drawing.Font("RudawRegular", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLogout.ForeColor = System.Drawing.Color.Maroon;
-            this.btnLogout.Location = new System.Drawing.Point(932, 657);
-            this.btnLogout.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnLogout.Location = new System.Drawing.Point(699, 534);
             this.btnLogout.Name = "btnLogout";
-            this.btnLogout.Size = new System.Drawing.Size(132, 38);
+            this.btnLogout.Size = new System.Drawing.Size(99, 31);
             this.btnLogout.TabIndex = 6;
             this.btnLogout.Text = "🚪 Logout";
             this.btnLogout.UseVisualStyleBackColor = true;
@@ -168,10 +169,9 @@
             // 
             this.btnClose.Font = new System.Drawing.Font("RudawRegular", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.ForeColor = System.Drawing.Color.Maroon;
-            this.btnClose.Location = new System.Drawing.Point(1092, 657);
-            this.btnClose.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnClose.Location = new System.Drawing.Point(819, 534);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(132, 38);
+            this.btnClose.Size = new System.Drawing.Size(99, 31);
             this.btnClose.TabIndex = 7;
             this.btnClose.Text = "❌ Close";
             this.btnClose.UseVisualStyleBackColor = true;
@@ -181,10 +181,9 @@
             // 
             this.btnBackup.Font = new System.Drawing.Font("RudawRegular", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnBackup.ForeColor = System.Drawing.Color.Maroon;
-            this.btnBackup.Location = new System.Drawing.Point(765, 657);
-            this.btnBackup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnBackup.Location = new System.Drawing.Point(574, 534);
             this.btnBackup.Name = "btnBackup";
-            this.btnBackup.Size = new System.Drawing.Size(132, 38);
+            this.btnBackup.Size = new System.Drawing.Size(99, 31);
             this.btnBackup.TabIndex = 13;
             this.btnBackup.Text = "📇 Backup";
             this.btnBackup.UseVisualStyleBackColor = true;
@@ -202,10 +201,9 @@
             this.pnBody.Controls.Add(this.btnReport);
             this.pnBody.Controls.Add(this.btnSettings);
             this.pnBody.Controls.Add(this.btnUserManagement);
-            this.pnBody.Location = new System.Drawing.Point(17, 130);
-            this.pnBody.Margin = new System.Windows.Forms.Padding(4);
+            this.pnBody.Location = new System.Drawing.Point(13, 106);
             this.pnBody.Name = "pnBody";
-            this.pnBody.Size = new System.Drawing.Size(1223, 485);
+            this.pnBody.Size = new System.Drawing.Size(917, 394);
             this.pnBody.TabIndex = 8;
             // 
             // btnMontlyService
@@ -214,10 +212,9 @@
             this.btnMontlyService.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMontlyService.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnMontlyService.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnMontlyService.Location = new System.Drawing.Point(559, 78);
-            this.btnMontlyService.Margin = new System.Windows.Forms.Padding(4);
+            this.btnMontlyService.Location = new System.Drawing.Point(419, 63);
             this.btnMontlyService.Name = "btnMontlyService";
-            this.btnMontlyService.Size = new System.Drawing.Size(156, 98);
+            this.btnMontlyService.Size = new System.Drawing.Size(117, 80);
             this.btnMontlyService.TabIndex = 12;
             this.btnMontlyService.Text = "Monthly Service";
             this.btnMontlyService.UseVisualStyleBackColor = false;
@@ -229,10 +226,9 @@
             this.btnRecieveMoney.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRecieveMoney.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnRecieveMoney.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnRecieveMoney.Location = new System.Drawing.Point(43, 78);
-            this.btnRecieveMoney.Margin = new System.Windows.Forms.Padding(4);
+            this.btnRecieveMoney.Location = new System.Drawing.Point(32, 63);
             this.btnRecieveMoney.Name = "btnRecieveMoney";
-            this.btnRecieveMoney.Size = new System.Drawing.Size(156, 98);
+            this.btnRecieveMoney.Size = new System.Drawing.Size(117, 80);
             this.btnRecieveMoney.TabIndex = 12;
             this.btnRecieveMoney.Text = "Recieve Money";
             this.btnRecieveMoney.UseVisualStyleBackColor = false;
@@ -244,10 +240,9 @@
             this.btnMaintenance.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMaintenance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnMaintenance.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnMaintenance.Location = new System.Drawing.Point(1051, 78);
-            this.btnMaintenance.Margin = new System.Windows.Forms.Padding(4);
+            this.btnMaintenance.Location = new System.Drawing.Point(788, 63);
             this.btnMaintenance.Name = "btnMaintenance";
-            this.btnMaintenance.Size = new System.Drawing.Size(168, 98);
+            this.btnMaintenance.Size = new System.Drawing.Size(126, 80);
             this.btnMaintenance.TabIndex = 11;
             this.btnMaintenance.Text = "Maintenance";
             this.btnMaintenance.UseVisualStyleBackColor = false;
@@ -259,10 +254,9 @@
             this.btnUnits.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnUnits.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnUnits.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnUnits.Location = new System.Drawing.Point(301, 78);
-            this.btnUnits.Margin = new System.Windows.Forms.Padding(4);
+            this.btnUnits.Location = new System.Drawing.Point(226, 63);
             this.btnUnits.Name = "btnUnits";
-            this.btnUnits.Size = new System.Drawing.Size(156, 98);
+            this.btnUnits.Size = new System.Drawing.Size(117, 80);
             this.btnUnits.TabIndex = 11;
             this.btnUnits.Text = "Units";
             this.btnUnits.UseVisualStyleBackColor = false;
@@ -274,10 +268,9 @@
             this.btnElectric.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnElectric.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnElectric.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnElectric.Location = new System.Drawing.Point(813, 78);
-            this.btnElectric.Margin = new System.Windows.Forms.Padding(4);
+            this.btnElectric.Location = new System.Drawing.Point(610, 63);
             this.btnElectric.Name = "btnElectric";
-            this.btnElectric.Size = new System.Drawing.Size(156, 98);
+            this.btnElectric.Size = new System.Drawing.Size(117, 80);
             this.btnElectric.TabIndex = 10;
             this.btnElectric.Text = "Electric";
             this.btnElectric.UseVisualStyleBackColor = false;
@@ -289,10 +282,9 @@
             this.btnDelete.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDelete.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnDelete.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnDelete.Location = new System.Drawing.Point(724, 268);
-            this.btnDelete.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDelete.Location = new System.Drawing.Point(543, 218);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(156, 98);
+            this.btnDelete.Size = new System.Drawing.Size(117, 80);
             this.btnDelete.TabIndex = 9;
             this.btnDelete.Text = "Deleted Records";
             this.btnDelete.UseVisualStyleBackColor = false;
@@ -303,10 +295,9 @@
             this.btnReport.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnReport.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnReport.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnReport.Location = new System.Drawing.Point(120, 268);
-            this.btnReport.Margin = new System.Windows.Forms.Padding(4);
+            this.btnReport.Location = new System.Drawing.Point(90, 218);
             this.btnReport.Name = "btnReport";
-            this.btnReport.Size = new System.Drawing.Size(156, 98);
+            this.btnReport.Size = new System.Drawing.Size(117, 80);
             this.btnReport.TabIndex = 9;
             this.btnReport.Text = "Report";
             this.btnReport.UseVisualStyleBackColor = false;
@@ -318,10 +309,9 @@
             this.btnSettings.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSettings.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnSettings.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnSettings.Location = new System.Drawing.Point(984, 268);
-            this.btnSettings.Margin = new System.Windows.Forms.Padding(4);
+            this.btnSettings.Location = new System.Drawing.Point(738, 218);
             this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(168, 98);
+            this.btnSettings.Size = new System.Drawing.Size(126, 80);
             this.btnSettings.TabIndex = 8;
             this.btnSettings.Text = "Settings";
             this.btnSettings.UseVisualStyleBackColor = false;
@@ -333,31 +323,20 @@
             this.btnUserManagement.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnUserManagement.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnUserManagement.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnUserManagement.Location = new System.Drawing.Point(425, 268);
-            this.btnUserManagement.Margin = new System.Windows.Forms.Padding(4);
+            this.btnUserManagement.Location = new System.Drawing.Point(319, 218);
             this.btnUserManagement.Name = "btnUserManagement";
-            this.btnUserManagement.Size = new System.Drawing.Size(156, 98);
+            this.btnUserManagement.Size = new System.Drawing.Size(117, 80);
             this.btnUserManagement.TabIndex = 8;
             this.btnUserManagement.Text = "User Management";
             this.btnUserManagement.UseVisualStyleBackColor = false;
-            // 
-            // pblog
-            // 
-            this.pblog.Image = global::ServiceSystem.Properties.Resources.square;
-            this.pblog.Location = new System.Drawing.Point(193, 17);
-            this.pblog.Margin = new System.Windows.Forms.Padding(4);
-            this.pblog.Name = "pblog";
-            this.pblog.Size = new System.Drawing.Size(68, 62);
-            this.pblog.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pblog.TabIndex = 4;
-            this.pblog.TabStop = false;
+            this.btnUserManagement.Click += new System.EventHandler(this.btnUserManagement_Click);
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.ClientSize = new System.Drawing.Size(1335, 729);
+            this.ClientSize = new System.Drawing.Size(1001, 592);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.btnBackup);
             this.Controls.Add(this.pnBody);
@@ -367,7 +346,6 @@
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.pnTop);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -375,8 +353,8 @@
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.pnTop.ResumeLayout(false);
             this.pnTop.PerformLayout();
-            this.pnBody.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pblog)).EndInit();
+            this.pnBody.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

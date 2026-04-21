@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -119,6 +120,12 @@
     <Compile Include="Forms\UnitsForm.Designer.cs">
       <DependentUpon>UnitsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\UserManagementForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UserManagementForm.Designer.cs">
+      <DependentUpon>UserManagementForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\Building.cs" />
     <Compile Include="Models\BuildingSummaryItem.cs" />
     <Compile Include="Models\DebtorItem.cs" />
@@ -161,6 +168,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UnitsForm.resx">
       <DependentUpon>UnitsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UserManagementForm.resx">
+      <DependentUpon>UserManagementForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
