@@ -1,4 +1,5 @@
 ﻿using ServiceSystem.Data;
+using ServiceSystem.Models;
 using System;
 using System.Windows.Forms;
 
@@ -13,8 +14,8 @@ namespace ServiceSystem.Forms
             InitializeComponent();
         }
 
- 
-            private void btnLogin_Click(object sender, EventArgs e)
+
+        private void btnLogin_Click(object sender, EventArgs e)
         {
             // Check that username and password are not empty
             if (string.IsNullOrWhiteSpace(txtUsername.Text))
@@ -34,7 +35,20 @@ namespace ServiceSystem.Forms
             }
 
             // Try to login — returns User object if correct, null if wrong
-            var user = userRepo.Login(txtUsername.Text.Trim(), txtPassword.Text);
+            User user = null;
+            try
+            {
+                user = userRepo.Login(txtUsername.Text.Trim(), txtPassword.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Could not connect to the database.\n\n" +
+                    "Please make sure SQL Server is running and try again.\n\n" +
+                    "Details: " + ex.Message,
+                    "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             if (user == null)
             {
@@ -46,7 +60,6 @@ namespace ServiceSystem.Forms
             }
 
             // Login successful — save the user in SessionManager
-            // Now every form in the system knows who is logged in
             SessionManager.CurrentUser = user;
 
             // Open main form and close login form
@@ -54,6 +67,6 @@ namespace ServiceSystem.Forms
             mainForm.Show();
             this.Hide();
         }
-    
+
     }
 }

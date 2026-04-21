@@ -257,5 +257,22 @@ namespace ServiceSystem.Data
             u.IsActive = (bool)reader["IsActive"];
             return u;
         }
+
+        // -------------------------------------------------------
+        // COUNT ACTIVE ADMINS — used for last-admin protection
+        // -------------------------------------------------------
+        public int CountActiveAdmins()
+        {
+            using (SqlConnection con = DatabaseHelper.GetConnection())
+            {
+                string sql = @"SELECT COUNT(*) FROM Users
+                       WHERE Role = 'Admin' AND IsActive = 1";
+
+                SqlCommand cmd = new SqlCommand(sql, con);
+                con.Open();
+
+                return (int)cmd.ExecuteScalar();
+            }
+        }
     }
 }

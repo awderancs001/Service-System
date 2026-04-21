@@ -67,50 +67,67 @@ namespace ServiceSystem.Data
             {
                 con.Open();
 
-                // Get ALL active units across all buildings
-                string getUnits = @"SELECT UnitID, MonthlyServiceAmount
+                // Start a transaction — everything below is all-or-nothing
+                using (SqlTransaction tx = con.BeginTransaction())
+                {
+                    try
+                    {
+                        // Get ALL active units across all buildings
+                        string getUnits = @"SELECT UnitID, MonthlyServiceAmount
                                     FROM Units
                                     WHERE IsActive = 1";
 
-                SqlCommand getCmd = new SqlCommand(getUnits, con);
+                        SqlCommand getCmd = new SqlCommand(getUnits, con, tx);
 
-                List<(int unitID, decimal amount)> units = new List<(int, decimal)>();
+                        List<(int unitID, decimal amount)> units = new List<(int, decimal)>();
 
-                SqlDataReader reader = getCmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    units.Add(((int)reader["UnitID"], (decimal)reader["MonthlyServiceAmount"]));
-                }
-                reader.Close();
+                        using (SqlDataReader reader = getCmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                units.Add(((int)reader["UnitID"], (decimal)reader["MonthlyServiceAmount"]));
+                            }
+                        }
 
-                // For each unit, insert a bill only if one doesn't already exist
-                foreach (var unit in units)
-                {
-                    string checkSql = @"SELECT COUNT(*) FROM MonthlyServiceBills
+                        // For each unit, insert a bill only if one doesn't already exist
+                        foreach (var unit in units)
+                        {
+                            string checkSql = @"SELECT COUNT(*) FROM MonthlyServiceBills
                                         WHERE UnitID = @UnitID AND BillMonth = @BillMonth";
 
-                    SqlCommand checkCmd = new SqlCommand(checkSql, con);
-                    checkCmd.Parameters.AddWithValue("@UnitID",    unit.unitID);
-                    checkCmd.Parameters.AddWithValue("@BillMonth", billMonth);
+                            SqlCommand checkCmd = new SqlCommand(checkSql, con, tx);
+                            checkCmd.Parameters.AddWithValue("@UnitID", unit.unitID);
+                            checkCmd.Parameters.AddWithValue("@BillMonth", billMonth);
 
-                    int exists = (int)checkCmd.ExecuteScalar();
-                    if (exists > 0) continue;  // already has a bill for this month — skip
+                            int exists = (int)checkCmd.ExecuteScalar();
+                            if (exists > 0) continue;  // already has a bill this month — skip
 
-                    string insertSql = @"INSERT INTO MonthlyServiceBills (UnitID, BillMonth, Amount, CreatedBy)
+                            string insertSql = @"INSERT INTO MonthlyServiceBills (UnitID, BillMonth, Amount, CreatedBy)
                                          VALUES (@UnitID, @BillMonth, @Amount, @CreatedBy)";
 
-                    SqlCommand insertCmd = new SqlCommand(insertSql, con);
-                    insertCmd.Parameters.AddWithValue("@UnitID",    unit.unitID);
-                    insertCmd.Parameters.AddWithValue("@BillMonth", billMonth);
-                    insertCmd.Parameters.AddWithValue("@Amount",    unit.amount);
-                    insertCmd.Parameters.AddWithValue("@CreatedBy", SessionManager.CurrentUser.UserID);
-                    insertCmd.ExecuteNonQuery();
+                            SqlCommand insertCmd = new SqlCommand(insertSql, con, tx);
+                            insertCmd.Parameters.AddWithValue("@UnitID", unit.unitID);
+                            insertCmd.Parameters.AddWithValue("@BillMonth", billMonth);
+                            insertCmd.Parameters.AddWithValue("@Amount", unit.amount);
+                            insertCmd.Parameters.AddWithValue("@CreatedBy", SessionManager.CurrentUser.UserID);
+                            insertCmd.ExecuteNonQuery();
 
-                    count++;
+                            count++;
+                        }
+
+                        // All inserts succeeded — commit (make them permanent)
+                        tx.Commit();
+                    }
+                    catch
+                    {
+                        // Something went wrong — undo everything inserted so far
+                        tx.Rollback();
+                        throw;  // re-throw so the form can show the error
+                    }
                 }
             }
 
-            return count;  // tells the form how many bills were created
+            return count;
         }
 
         // -------------------------------------------------------

@@ -34,8 +34,18 @@ namespace ServiceSystem.Forms
 
         private void LoadUsers()
         {
-            // 1. Get all users from database
-            userList = userRepo.GetAll();
+            try
+            {
+                // 1. Get all users from database
+                userList = userRepo.GetAll();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not load users: " + ex.Message,
+                    "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                userList = new List<User>();  // empty list so grid still works
+                return;
+            }
 
             // 2. Clear grid
             dgvUserList.Rows.Clear();
@@ -122,7 +132,8 @@ namespace ServiceSystem.Forms
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            // 1. Validation
+       
+            // 1. Validation (no DB, no try/catch needed)
             if (string.IsNullOrWhiteSpace(txtUsername.Text))
             {
                 MessageBox.Show("Please enter a username.");
@@ -143,51 +154,61 @@ namespace ServiceSystem.Forms
             if (selectedUser == null)
             {
                 // --- NEW USER ---
-
-                // Check duplicate username
-
                 if (string.IsNullOrWhiteSpace(txtPassword.Text))
                 {
                     MessageBox.Show("Please enter a password.");
                     return;
                 }
-
                 if (txtPassword.Text.Length < 4)
                 {
                     MessageBox.Show("Password must be at least 4 characters.");
                     return;
                 }
-
                 if (txtPassword.Text != txtConfirmPassword.Text)
                 {
                     MessageBox.Show("Passwords do not match. Please retype.");
                     return;
                 }
 
-                if (userRepo.UsernameExists(txtUsername.Text.Trim()))
+                // DB call #1 — check duplicate
+                try
                 {
-                    MessageBox.Show("This username is already taken.");
+                    if (userRepo.UsernameExists(txtUsername.Text.Trim()))
+                    {
+                        MessageBox.Show("This username is already taken.");
+                        return;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Could not check username: " + ex.Message,
+                        "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-
-                // Build new user object
+                // Build user object
                 User newUser = new User();
                 newUser.Username = txtUsername.Text.Trim();
                 newUser.FullName = txtFullName.Text.Trim();
                 newUser.Role = cmbRole.SelectedItem.ToString();
                 newUser.IsActive = chkIsActive.Checked;
 
-                // Save to database (hashes password internally)
-                userRepo.Save(newUser, txtPassword.Text);
-
-                MessageBox.Show("User created successfully!");
+                // DB call #2 — save
+                try
+                {
+                    userRepo.Save(newUser, txtPassword.Text);
+                    MessageBox.Show("User created successfully!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Could not save user: " + ex.Message,
+                        "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
             }
             else
             {
                 // --- UPDATE EXISTING USER ---
-
-                // Don't let admin deactivate themselves by accident
                 if (selectedUser.UserID == SessionManager.CurrentUser.UserID
                     && !chkIsActive.Checked)
                 {
@@ -195,19 +216,88 @@ namespace ServiceSystem.Forms
                     return;
                 }
 
-                // Update fields (username does NOT change)
+                // Last-admin protection
+                // If this user is currently an active Admin, and the change would remove them
+                // from the admin pool (role change OR deactivation), make sure they're not the last one
+                bool wasActiveAdmin = (selectedUser.Role == "Admin" && selectedUser.IsActive);
+                bool willStillBeAdmin = (cmbRole.SelectedItem.ToString() == "Admin" && chkIsActive.Checked);
+
+                if (wasActiveAdmin && !willStillBeAdmin)
+                {
+                    try
+                    {
+                        int adminCount = userRepo.CountActiveAdmins();
+                        if (adminCount <= 1)
+                        {
+                            MessageBox.Show(
+                                "This is the last active administrator.\n\n" +
+                                "You cannot remove admin rights or deactivate this account, " +
+                                "because it would lock everyone out of user management and settings.",
+                                "Blocked", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Could not verify admin count: " + ex.Message,
+                            "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+
                 selectedUser.FullName = txtFullName.Text.Trim();
                 selectedUser.Role = cmbRole.SelectedItem.ToString();
                 selectedUser.IsActive = chkIsActive.Checked;
 
-                userRepo.Update(selectedUser);
-
-                MessageBox.Show("User updated successfully!");
+                // DB call — update
+                try
+                {
+                    userRepo.Update(selectedUser);
+                    MessageBox.Show("User updated successfully!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Could not update user: " + ex.Message,
+                        "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
             }
 
-            // 3. Reload grid + clear form
-            LoadUsers();
-            ClearForm();
+            // 3. Reload grid + clear form — also wrapped (DB read)
+            try
+            {
+                LoadUsers();
+                ClearForm();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not refresh list: " + ex.Message,
+                    "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        
+        }
+
+
+        private void btnChangePW_Click(object sender, EventArgs e)
+        {
+
+            // Must select a user first
+            if (selectedUser == null)
+            {
+                MessageBox.Show("Please select a user first.");
+                return;
+            }
+
+            // Open the dialog
+            ChangePasswordForm dlg = new ChangePasswordForm(
+                selectedUser.UserID,
+                selectedUser.Username,
+                selectedUser.FullName);
+
+            dlg.ShowDialog();
+
+            // Nothing more to do — password is changed inside dialog
+
         }
     }
 }

@@ -23,6 +23,11 @@ namespace ServiceSystem.Forms
             lblCurrentUser.Text = "👤  " + SessionManager.CurrentUser.FullName;
             lblRole.Text = SessionManager.CurrentUser.Role;
             lblDate.Text = "📅  " + DateTime.Now.ToString("dddd, dd MMMM yyyy");
+
+            // Hide admin-only buttons for non-admin users
+            //bool isAdmin = SessionManager.CurrentUser.Role == "Admin";
+            //btnUserManagement.Visible = isAdmin;
+            //btnSettings.Visible = isAdmin;
         }
 
         private void btnLogout_Click(object sender, EventArgs e)
@@ -89,6 +94,14 @@ namespace ServiceSystem.Forms
 
         private void btnUserManagement_Click(object sender, EventArgs e)
         {
+            // Only Admin can manage users
+            if (SessionManager.CurrentUser.Role != "Admin")
+            {
+                MessageBox.Show("Only an administrator can manage users.",
+                    "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             new UserManagementForm().ShowDialog();
         }
     }

@@ -114,7 +114,7 @@ namespace ServiceSystem.Forms
             // 
             this.txtConfirmPassword.Location = new System.Drawing.Point(123, 160);
             this.txtConfirmPassword.Name = "txtConfirmPassword";
-            this.txtConfirmPassword.PasswordChar = '.';
+            this.txtConfirmPassword.PasswordChar = '*';
             this.txtConfirmPassword.Size = new System.Drawing.Size(132, 20);
             this.txtConfirmPassword.TabIndex = 15;
             // 
@@ -122,7 +122,7 @@ namespace ServiceSystem.Forms
             // 
             this.txtPassword.Location = new System.Drawing.Point(122, 117);
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.PasswordChar = '.';
+            this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(132, 20);
             this.txtPassword.TabIndex = 14;
             // 
@@ -198,7 +198,6 @@ namespace ServiceSystem.Forms
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            
             // 
             // btnChangePW
             // 
@@ -281,10 +280,6 @@ namespace ServiceSystem.Forms
 
         }
 
-        private void btnChangePW_Click(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
 
         #endregion
 

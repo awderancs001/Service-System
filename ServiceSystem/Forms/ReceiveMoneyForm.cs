@@ -51,6 +51,20 @@ namespace ServiceSystem.Forms
 
         private void FillMonthCombos()
         {
+            // Clear first in case Designer put items in
+            cmbForMonth.Items.Clear();
+            cmbToMonth.Items.Clear();
+            cmbForYear.Items.Clear();
+            cmbToYear.Items.Clear();
+
+            // Fill months — store as ints 1..12 so LoadPayments() can use them directly
+            for (int m = 1; m <= 12; m++)
+            {
+                cmbForMonth.Items.Add(m);
+                cmbToMonth.Items.Add(m);
+            }
+
+            // Fill years — last year, this year, next year
             int currentYear = DateTime.Now.Year;
             for (int y = currentYear - 1; y <= currentYear + 1; y++)
             {
@@ -58,8 +72,11 @@ namespace ServiceSystem.Forms
                 cmbToYear.Items.Add(y);
             }
 
+            // Default selections — now they actually match because items exist
             cmbForMonth.SelectedItem = DateTime.Now.Month;
             cmbForYear.SelectedItem = currentYear;
+            cmbToMonth.SelectedItem = DateTime.Now.Month;
+            cmbToYear.SelectedItem = currentYear;
         }
 
         private void LoadUnits()
