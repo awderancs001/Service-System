@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Main Form Design</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #eef2f7; padding: 30px; }
+    h2 { color: #1a2a4a; margin-bottom: 20px; font-size: 16px; }
+
+    .screen {
+      width: 1100px;
+      height: 650px;
+      background: #f0f2f5;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top bar */
+    .topbar {
+      background: linear-gradient(135deg, #1565c0, #0d47a1);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .topbar-logo {
+      width: 40px; height: 40px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 20px;
+    }
+
+    .topbar-title { color: white; }
+    .topbar-title .main { font-size: 17px; font-weight: 700; }
+    .topbar-title .sub  { font-size: 11px; opacity: 0.75; }
+
+    .topbar-right {
+      display: flex; align-items: center; gap: 16px;
+    }
+
+    .user-info {
+      text-align: right; color: white;
+    }
+    .user-info .name { font-size: 13px; font-weight: 600; }
+    .user-info .role { font-size: 11px; opacity: 0.7; }
+
+    .btn-top {
+      height: 34px; padding: 0 16px;
+      border: 1.5px solid rgba(255,255,255,0.4);
+      background: transparent;
+      color: white; border-radius: 6px;
+      font-size: 12px; cursor: pointer;
+      font-family: 'Segoe UI', Arial;
+    }
+
+    .btn-top:hover { background: rgba(255,255,255,0.1); }
+    .btn-top.danger { border-color: #ff6b6b; color: #ff6b6b; }
+
+    /* Body */
+    .body {
+      flex: 1;
+      padding: 28px;
+      overflow-y: auto;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+      margin-top: 24px;
+    }
+
+    .section-title:first-child { margin-top: 0; }
+
+    .btn-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 8px;
+    }
+
+    .btn-grid.cols3 { grid-template-columns: repeat(3, 1fr); }
+    .btn-grid.cols5 { grid-template-columns: repeat(5, 1fr); }
+
+    .module-btn {
+      background: white;
+      border: none;
+      border-radius: 10px;
+      padding: 20px 16px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      transition: all 0.2s;
+      font-family: 'Segoe UI', Arial;
+    }
+
+    .module-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    }
+
+    .btn-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+    }
+
+    .btn-label { font-size: 13px; font-weight: 600; color: #333; text-align: center; }
+    .btn-desc  { font-size: 11px; color: #999; text-align: center; }
+
+    .blue   { background: #e3f2fd; }
+    .green  { background: #e8f5e9; }
+    .orange { background: #fff3e0; }
+    .purple { background: #f3e5f5; }
+    .red    { background: #fce4ec; }
+    .teal   { background: #e0f2f1; }
+    .indigo { background: #e8eaf6; }
+    .amber  { background: #fff8e1; }
+    .gray   { background: #f5f5f5; }
+
+    /* Bottom status bar */
+    .statusbar {
+      height: 30px;
+      background: #1a2a4a;
+      display: flex; align-items: center;
+      padding: 0 20px;
+      gap: 24px;
+      flex-shrink: 0;
+    }
+
+    .status-item {
+      font-size: 11px; color: rgba(255,255,255,0.6);
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #4caf50; }
+
+    /* Controls table */
+    .props {
+      margin-top: 32px;
+      background: white;
+      border-radius: 10px;
+      padding: 24px;
+    }
+
+    .props h3 { font-size: 14px; color: #333; margin-bottom: 16px; }
+
+    .props table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .props table th { background: #1565c0; color: white; padding: 8px 12px; text-align: left; }
+    .props table td { padding: 7px 12px; border-bottom: 1px solid #eee; color: #444; vertical-align: top; }
+    .props table tr:hover td { background: #f0f4ff; }
+
+    code { background: #e8f0fe; color: #1565c0; padding: 1px 6px;
+           border-radius: 4px; font-family: Consolas, monospace; font-size: 12px; }
+  </style>
+</head>
+<body>
+
+<h2>Main Form Design — City Service System</h2>
+
+<div class="screen">
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">🏙️</div>
+      <div class="topbar-title">
+        <div class="main">City Service System</div>
+        <div class="sub">سیستەمی خزمەتگوزاری شار</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="user-info">
+        <div class="name">👤 System Admin</div>
+        <div class="role">Administrator</div>
+      </div>
+      <button class="btn-top">🔄 Refresh</button>
+      <button class="btn-top danger">🚪 Logout</button>
+    </div>
+  </div>
+
+  <!-- Main Body -->
+  <div class="body">
+
+    <!-- Core Data -->
+    <div class="section-title">Core Data</div>
+    <div class="btn-grid cols3">
+      <button class="module-btn">
+        <div class="btn-icon blue">🏢</div>
+        <div class="btn-label">Buildings</div>
+        <div class="btn-desc">Manage blocks</div>
+      </button>
+      <button class="module-btn">
+        <div class="btn-icon teal">🏠</div>
+        <div class="btn-label">Units</div>
+        <div class="btn-desc">Owners & tenants</div>
+      </button>
+      <button class="module-btn">
+        <div class="btn-icon indigo">👥</div>
+        <div class="btn-label">User Management</div>
+        <div class="btn-desc">Users & permissions</div>
+      </button>
+    </div>
+
+    <!-- Billing -->
+    <div class="section-title">Billing</div>
+    <div class="btn-grid">
+      <button class="module-btn">
+        <div class="btn-icon green">📋</div>
+        <div class="btn-label">Monthly Service</div>
+        <div class="btn-desc">Record service fees</div>
+      </button>
+      <button class="module-btn">
+        <div class="btn-icon orange">🔧</div>
+        <div class="btn-label">Maintenance</div>
+        <div class="btn-desc">Record maintenance</div>
+      </button>
+      <button class="module-btn">
+        <div class="btn-icon amber">⚡</div>
+        <div class="btn-label">Electric</div>
+        <div class="btn-desc">Meter readings</div>
+      </button>
+      <button class="module-btn">
+        <div class="btn-icon purple">💰</div>
+        <div class="btn-label">Receive Money</div>
+        <div class="btn-desc">Record payments</div>
+      </button>
+    </div>
+
+    <!-- Reports & System -->
+    <div class="section-title">Reports & System</div>
+    <div class="btn-grid cols5">
+      <button class="module-btn">
+        <div class="btn-icon blue">📊</div>
+        <div class="btn-label">Reports</div>
+        <div class="btn-desc">All reports</div>
+      </button>
+      <button class="module-btn">
+        <div class="btn-icon orange">🧾</div>
+        <div class="btn-label">Invoice</div>
+        <div class="btn-desc">Print invoices</div>
+      </button>
+      <button class="module-btn">
+        <div class="btn-icon red">🗑️</div>
+        <div class="btn-label">Deleted Records</div>
+        <div class="btn-desc">View deleted</div>
+      </button>
+      <button class="module-btn">
+        <div class="btn-icon teal">💾</div>
+        <div class="btn-label">Backup</div>
+        <div class="btn-desc">Backup database</div>
+      </button>
+      <button class="module-btn">
+        <div class="btn-icon gray">⚙️</div>
+        <div class="btn-label">Settings</div>
+        <div class="btn-desc">System settings</div>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Status Bar -->
+  <div class="statusbar">
+    <div class="status-item"><div class="status-dot"></div> Connected to database</div>
+    <div class="status-item">📅 April 2026</div>
+    <div class="status-item">🏠 Total Units: 1000</div>
+  </div>
+
+</div>
+
+<!-- Controls Table -->
+<div class="props">
+  <h3>Controls to add in Visual Studio Designer:</h3>
+  <table>
+    <tr>
+      <th>Control</th>
+      <th>Name</th>
+      <th>Properties</th>
+    </tr>
+    <tr>
+      <td>Form</td>
+      <td><code>MainForm</code></td>
+      <td>Size: <code>1100 x 650</code> · StartPosition: <code>CenterScreen</code> · WindowState: <code>Maximized</code> · FormBorderStyle: <code>Sizable</code></td>
+    </tr>
+    <tr>
+      <td>Panel — top bar</td>
+      <td><code>pnlTop</code></td>
+      <td>Dock: <code>Top</code> · Height: <code>64</code> · BackColor: <code>#1565c0</code></td>
+    </tr>
+    <tr>
+      <td>Label — company</td>
+      <td><code>lblCompany</code></td>
+      <td>Text: <code>City Service System</code> · ForeColor: White · Font: Segoe UI 14pt Bold · Inside pnlTop</td>
+    </tr>
+    <tr>
+      <td>Label — logged in user</td>
+      <td><code>lblCurrentUser</code></td>
+      <td>Text: filled at runtime · ForeColor: White · Inside pnlTop</td>
+    </tr>
+    <tr>
+      <td>Button — Logout</td>
+      <td><code>btnLogout</code></td>
+      <td>Text: <code>Logout</code> · FlatStyle: <code>Flat</code> · ForeColor: White · Inside pnlTop</td>
+    </tr>
+    <tr>
+      <td>Button — Refresh</td>
+      <td><code>btnRefresh</code></td>
+      <td>Text: <code>Refresh</code> · FlatStyle: <code>Flat</code> · ForeColor: White · Inside pnlTop</td>
+    </tr>
+    <tr>
+      <td>Panel — main body</td>
+      <td><code>pnlBody</code></td>
+      <td>Dock: <code>Fill</code> · BackColor: <code>#f0f2f5</code> · AutoScroll: <code>True</code></td>
+    </tr>
+    <tr>
+      <td>Button — Buildings</td>
+      <td><code>btnBuildings</code></td>
+      <td>Size: <code>160 x 90</code> · Text: <code>Buildings</code> · Inside pnlBody</td>
+    </tr>
+    <tr>
+      <td>Button — Units</td>
+      <td><code>btnUnits</code></td>
+      <td>Size: <code>160 x 90</code> · Text: <code>Units</code> · Inside pnlBody</td>
+    </tr>
+    <tr>
+      <td>Button — Monthly Service</td>
+      <td><code>btnMonthlyService</code></td>
+      <td>Size: <code>160 x 90</code> · Text: <code>Monthly Service</code> · Inside pnlBody</td>
+    </tr>
+    <tr>
+      <td>Button — Maintenance</td>
+      <td><code>btnMaintenance</code></td>
+      <td>Size: <code>160 x 90</code> · Text: <code>Maintenance</code> · Inside pnlBody</td>
+    </tr>
+    <tr>
+      <td>Button — Electric</td>
+      <td><code>btnElectric</code></td>
+      <td>Size: <code>160 x 90</code> · Text: <code>Electric</code> · Inside pnlBody</td>
+    </tr>
+    <tr>
+      <td>Button — Receive Money</td>
+      <td><code>btnReceiveMoney</code></td>
+      <td>Size: <code>160 x 90</code> · Text: <code>Receive Money</code> · Inside pnlBody</td>
+    </tr>
+    <tr>
+      <td>Button — Reports</td>
+      <td><code>btnReports</code></td>
+      <td>Size: <code>160 x 90</code> · Text: <code>Reports</code> · Inside pnlBody</td>
+    </tr>
+    <tr>
+      <td>Button — Invoice</td>
+      <td><code>btnInvoice</code></td>
+      <td>Size: <code>160 x 90</code> · Text: <code>Invoice</code> · Inside pnlBody</td>
+    </tr>
+    <tr>
+      <td>Button — Deleted Records</td>
+      <td><code>btnDeletedRecords</code></td>
+      <td>Size: <code>160 x 90</code> · Text: <code>Deleted Records</code> · Inside pnlBody</td>
+    </tr>
+    <tr>
+      <td>Button — Backup</td>
+      <td><code>btnBackup</code></td>
+      <td>Size: <code>160 x 90</code> · Text: <code>Backup</code> · Inside pnlBody</td>
+    </tr>
+    <tr>
+      <td>Button — Settings</td>
+      <td><code>btnSettings</code></td>
+      <td>Size: <code>160 x 90</code> · Text: <code>Settings</code> · Inside pnlBody</td>
+    </tr>
+    <tr>
+      <td>Button — User Management</td>
+      <td><code>btnUserManagement</code></td>
+      <td>Size: <code>160 x 90</code> · Text: <code>User Management</code> · Inside pnlBody</td>
+    </tr>
+    <tr>
+      <td>Panel — status bar</td>
+      <td><code>pnlStatus</code></td>
+      <td>Dock: <code>Bottom</code> · Height: <code>30</code> · BackColor: <code>#1a2a4a</code></td>
+    </tr>
+    <tr>
+      <td>Label — status</td>
+      <td><code>lblStatus</code></td>
+      <td>Text: <code>Connected</code> · ForeColor: <code>#aaaaaa</code> · Inside pnlStatus</td>
+    </tr>
+  </table>
+</div>
+
+</body>
+</html>

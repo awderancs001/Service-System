@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Form Design</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #1a2a4a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .screen {
+      background: #1a2a4a;
+      width: 900px;
+      height: 560px;
+      display: flex;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    }
+
+    /* Left side — company branding */
+    .left {
+      width: 45%;
+      background: linear-gradient(160deg, #1565c0, #0d47a1);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      color: white;
+    }
+
+    .logo-circle {
+      width: 90px;
+      height: 90px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .logo-circle svg {
+      width: 48px;
+      height: 48px;
+      fill: white;
+    }
+
+    .company-name {
+      font-size: 22px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 8px;
+      letter-spacing: 0.5px;
+    }
+
+    .company-name-kurdish {
+      font-size: 16px;
+      text-align: center;
+      opacity: 0.8;
+      margin-bottom: 24px;
+      direction: rtl;
+    }
+
+    .divider {
+      width: 50px;
+      height: 2px;
+      background: rgba(255,255,255,0.4);
+      margin-bottom: 24px;
+    }
+
+    .tagline {
+      font-size: 13px;
+      text-align: center;
+      opacity: 0.7;
+      line-height: 1.6;
+    }
+
+    /* Right side — login form */
+    .right {
+      width: 55%;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 50px 45px;
+    }
+
+    .welcome {
+      font-size: 26px;
+      font-weight: 700;
+      color: #1a2a4a;
+      margin-bottom: 6px;
+    }
+
+    .welcome-sub {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 36px;
+    }
+
+    .field-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .field-wrap {
+      position: relative;
+      margin-bottom: 22px;
+    }
+
+    .field-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+      font-size: 16px;
+    }
+
+    .field-input {
+      width: 100%;
+      height: 46px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      padding: 0 14px 0 42px;
+      font-size: 14px;
+      color: #333;
+      background: #f9f9f9;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .field-input:focus {
+      border-color: #1565c0;
+      background: #fff;
+    }
+
+    .field-input.password-field {
+      letter-spacing: 4px;
+      font-size: 18px;
+    }
+
+    .btn-login {
+      width: 100%;
+      height: 48px;
+      background: linear-gradient(135deg, #1565c0, #0d47a1);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 15px rgba(21,101,192,0.4);
+    }
+
+    .btn-login:hover {
+      background: linear-gradient(135deg, #1976d2, #1565c0);
+    }
+
+    .version {
+      text-align: center;
+      font-size: 11px;
+      color: #bbb;
+      margin-top: 28px;
+    }
+
+    /* Annotations */
+    .note {
+      position: absolute;
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 11px;
+      color: #555;
+      white-space: nowrap;
+    }
+
+    .arrow {
+      position: absolute;
+      color: #ffc107;
+      font-size: 18px;
+    }
+
+    .container {
+      position: relative;
+    }
+
+    /* Property panel mockup */
+    .props {
+      margin-top: 40px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 24px;
+      max-width: 900px;
+    }
+
+    .props h3 {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 16px;
+      font-family: 'Segoe UI', Arial;
+    }
+
+    .props table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      font-family: 'Segoe UI', Arial;
+    }
+
+    .props table th {
+      background: #1565c0;
+      color: white;
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    .props table td {
+      padding: 7px 12px;
+      border-bottom: 1px solid #eee;
+      color: #444;
+    }
+
+    .props table tr:hover td {
+      background: #f0f4ff;
+    }
+
+    code {
+      background: #e8f0fe;
+      color: #1565c0;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+      font-size: 12px;
+    }
+
+    h2 {
+      font-family: 'Segoe UI', Arial;
+      color: #1a2a4a;
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    .page {
+      padding: 30px;
+      background: #eef2f7;
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body style="display:block; background:#eef2f7; padding: 30px;">
+
+  <h2 style="font-family:Arial; color:#1a2a4a; margin-bottom:20px;">
+    Login Form Design — City Service System
+  </h2>
+
+  <!-- FORM MOCKUP -->
+  <div class="screen">
+
+    <!-- Left branding -->
+    <div class="left">
+      <div class="logo-circle">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div class="company-name">City Service System</div>
+      <div class="company-name-kurdish">سیستەمی خزمەتگوزاری شار</div>
+      <div class="divider"></div>
+      <div class="tagline">
+        Property &amp; Service Management<br>
+        Unit Billing · Payments · Invoices
+      </div>
+    </div>
+
+    <!-- Right login -->
+    <div class="right">
+      <div class="welcome">Welcome Back</div>
+      <div class="welcome-sub">Sign in to your account to continue</div>
+
+      <div class="field-label">Username</div>
+      <div class="field-wrap">
+        <span class="field-icon">👤</span>
+        <input class="field-input" type="text" placeholder="Enter your username" />
+      </div>
+
+      <div class="field-label">Password</div>
+      <div class="field-wrap">
+        <span class="field-icon">🔒</span>
+        <input class="field-input password-field" type="password" placeholder="••••••••" />
+      </div>
+
+      <button class="btn-login">LOGIN</button>
+
+      <div class="version">City Service System v1.0 &nbsp;·&nbsp; 2024</div>
+    </div>
+  </div>
+
+  <!-- CONTROLS TABLE -->
+  <div class="props">
+    <h3>Controls to add in Visual Studio Designer:</h3>
+    <table>
+      <tr>
+        <th>Control</th>
+        <th>Name</th>
+        <th>Important Properties to Set</th>
+      </tr>
+      <tr>
+        <td>Form</td>
+        <td><code>LoginForm</code></td>
+        <td>Size: <code>900 x 560</code> · StartPosition: <code>CenterScreen</code> · FormBorderStyle: <code>FixedSingle</code> · MaximizeBox: <code>False</code> · BackColor: <code>#1a2a4a</code></td>
+      </tr>
+      <tr>
+        <td>Panel (left)</td>
+        <td><code>pnlLeft</code></td>
+        <td>Size: <code>405 x 560</code> · Location: <code>0, 0</code> · BackColor: <code>#1565c0</code></td>
+      </tr>
+      <tr>
+        <td>Label — company name</td>
+        <td><code>lblCompany</code></td>
+        <td>Text: <code>City Service System</code> · ForeColor: White · Font: Segoe UI, 16pt Bold · Inside pnlLeft</td>
+      </tr>
+      <tr>
+        <td>Label — Kurdish name</td>
+        <td><code>lblCompanyKurdish</code></td>
+        <td>Text: <code>سیستەمی خزمەتگوزاری</code> · ForeColor: White · RightToLeft: <code>Yes</code> · Inside pnlLeft</td>
+      </tr>
+      <tr>
+        <td>Panel (right)</td>
+        <td><code>pnlRight</code></td>
+        <td>Size: <code>495 x 560</code> · Location: <code>405, 0</code> · BackColor: White</td>
+      </tr>
+      <tr>
+        <td>Label</td>
+        <td>—</td>
+        <td>Text: <code>Username</code> · Font: Segoe UI, 9pt Bold · Inside pnlRight</td>
+      </tr>
+      <tr>
+        <td>TextBox</td>
+        <td><code>txtUsername</code></td>
+        <td>Font: Segoe UI, 11pt · Inside pnlRight</td>
+      </tr>
+      <tr>
+        <td>Label</td>
+        <td>—</td>
+        <td>Text: <code>Password</code> · Font: Segoe UI, 9pt Bold · Inside pnlRight</td>
+      </tr>
+      <tr>
+        <td>TextBox</td>
+        <td><code>txtPassword</code></td>
+        <td>Font: Segoe UI, 11pt · PasswordChar: <code>*</code> · Inside pnlRight</td>
+      </tr>
+      <tr>
+        <td>Button</td>
+        <td><code>btnLogin</code></td>
+        <td>Text: <code>LOGIN</code> · BackColor: <code>#1565c0</code> · ForeColor: White · Font: Segoe UI, 11pt Bold · FlatStyle: <code>Flat</code> · Inside pnlRight</td>
+      </tr>
+      <tr>
+        <td>Label — version</td>
+        <td><code>lblVersion</code></td>
+        <td>Text: <code>City Service System v1.0</code> · ForeColor: <code>#aaaaaa</code> · Inside pnlRight</td>
+      </tr>
+    </table>
+  </div>
+
+</body>
+</html>

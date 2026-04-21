@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Service System — ER Diagram (Final)</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body  { font-family: Arial, sans-serif; background: #eef2f7; padding: 20px; margin: 0; }
+    h1    { color: #1a3c5e; text-align: center; margin-bottom: 4px; font-size: 22px; }
+    .sub  { text-align: center; color: #666; margin-bottom: 16px; font-size: 13px; }
+    .box  { background: white; border-radius: 12px; padding: 28px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.1); max-width: 1700px; margin: auto; overflow-x: auto; }
+    .legend { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+              margin-bottom: 18px; font-size: 12px; background: #f8f9fa;
+              padding: 10px; border-radius: 8px; }
+    .legend span { display: flex; align-items: center; gap: 6px; font-weight: 500; }
+    .dot  { width: 11px; height: 11px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+    .c1 { background: #3b7dd8; }
+    .c2 { background: #28a745; }
+    .c3 { background: #fd7e14; }
+    .c4 { background: #6f42c1; }
+    .c5 { background: #dc3545; }
+  </style>
+</head>
+<body>
+<div class="box">
+  <h1>City Service System — ER Diagram (Final)</h1>
+  <p class="sub">12 Tables &nbsp;·&nbsp; 2 Views &nbsp;·&nbsp; Open in Chrome or Edge</p>
+
+  <div class="legend">
+    <span><span class="dot c1"></span>System / Config</span>
+    <span><span class="dot c2"></span>Core Data (Buildings &amp; Units)</span>
+    <span><span class="dot c3"></span>Billing (3 types)</span>
+    <span><span class="dot c4"></span>Payments &amp; Invoices</span>
+    <span><span class="dot c5"></span>Audit &amp; Admin</span>
+  </div>
+
+  <div class="mermaid">
+erDiagram
+
+    Users {
+        int      UserID        PK
+        string   Username      "Unique login name"
+        string   PasswordHash  "SHA256 — never plain text"
+        string   FullName
+        string   Role          "Admin | User | Viewer"
+        bit      IsActive
+        datetime CreatedDate
+    }
+
+    SystemSettings {
+        string  SettingKey    PK  "CompanyName, InvoicePrefix..."
+        string  SettingValue
+        string  Description
+    }
+
+    Buildings {
+        int      BuildingID       PK
+        string   BuildingName     "Block A, Block B..."
+        string   BuildingCategory "House | Apartment"
+        string   Notes
+        datetime CreatedDate
+        int      CreatedBy        FK
+    }
+
+    Units {
+        int      UnitID               PK
+        int      BuildingID           FK  "Which block"
+        string   UnitName             "101, Ground Floor..."
+        string   UnitType             "A | B | C | D | E"
+        string   OwnerFullName
+        string   OwnerPhone
+        string   OwnerOtherPhone
+        string   OwnerNation
+        bit      HasTenant
+        string   TenantFullName       "NULL if no tenant"
+        string   TenantPhone
+        string   TenantOtherPhone
+        string   TenantNation
+        decimal  MonthlyServiceAmount "50 | 60 | 70..."
+        bit      IsActive             "0 = soft deleted"
+        datetime CreatedDate
+        int      CreatedBy            FK
+    }
+
+    MonthlyServiceBills {
+        int      BillID      PK
+        int      UnitID      FK
+        date     BillMonth   "2024-04-01 — always 1st of month"
+        decimal  Amount
+        string   Notes
+        datetime CreatedDate
+        int      CreatedBy   FK
+    }
+
+    MaintenanceBills {
+        int      MaintenanceID  PK
+        int      UnitID         FK
+        date     BillMonth
+        decimal  Amount
+        string   Description
+        datetime CreatedDate
+        int      CreatedBy      FK
+    }
+
+    ElectricBills {
+        int      ElectricID    PK
+        int      UnitID        FK
+        date     BillMonth
+        decimal  BeginReading  "Meter at start of month"
+        decimal  EndReading    "Meter at end of month"
+        decimal  PricePerUnit  "Cost per kwh — can differ each month"
+        decimal  TotalAmount   "COMPUTED: (End-Begin)*Price"
+        string   Notes
+        datetime CreatedDate
+        int      CreatedBy     FK
+    }
+
+    Payments {
+        int      PaymentID   PK
+        int      UnitID      FK
+        date     ForMonth    "First month this payment covers"
+        date     ToMonth     "Last month — NULL if only one month"
+        date     PaymentDate "Actual date money was received"
+        decimal  Amount
+        string   Comment
+        int      ReceivedBy  FK
+        datetime CreatedDate
+    }
+
+    Invoices {
+        int      InvoiceID             PK
+        string   InvoiceNumber         "INV-2024-0001"
+        int      PaymentID             FK  "Links to payment"
+        int      UnitID                FK
+        string   GiverName             "Company (English)"
+        string   GiverNameKurdish      "Company (Kurdish)"
+        string   ReceiverName          "Owner or tenant (English)"
+        string   ReceiverNameKurdish   "Owner or tenant (Kurdish)"
+        date     DebtMonth             "First month on invoice"
+        date     DebtToMonth           "Last month — NULL if single month"
+        date     PaymentDate
+        decimal  Amount
+        string   BillType              "Service|Maintenance|Electric|Mixed"
+        string   InvoiceContent        "Free text English"
+        string   InvoiceContentKurdish "Free text Kurdish"
+        int      CreatedBy             FK
+        string   CreatedByName         "Stored permanently"
+        datetime CreatedDate
+    }
+
+    DeletedRecords {
+        int      DeleteID           PK
+        string   TableName          "Which table"
+        int      RecordID           "Original ID"
+        string   RecordDescription  "Text snapshot of deleted data"
+        datetime DeletedDate
+        int      DeletedBy          FK
+        string   DeletedByName
+    }
+
+    UserFormPermissions {
+        int     PermissionID  PK
+        int     UserID        FK
+        string  FormName      "UnitsForm | BillingForm..."
+        bit     CanAccess
+        bit     CanEdit
+    }
+
+    BackupLog {
+        int      BackupID    PK
+        datetime BackupDate
+        string   BackupPath  "Full path to .bak file"
+        string   BackupType  "Auto | Manual"
+        bit      IsSuccess
+        string   Notes       "Error message if failed"
+        int      CreatedBy   FK
+    }
+
+    %% ── Relationships ──────────────────────────────────
+
+    Users             ||--o{ Buildings            : "creates"
+    Users             ||--o{ Units                : "creates"
+    Buildings         ||--o{ Units                : "contains"
+    Units             ||--o{ MonthlyServiceBills  : "charged monthly"
+    Units             ||--o{ MaintenanceBills     : "charged maintenance"
+    Units             ||--o{ ElectricBills        : "charged electric"
+    Units             ||--o{ Payments             : "makes payments"
+    Units             ||--o{ Invoices             : "receives invoices"
+    Payments          ||--o| Invoices             : "generates invoice"
+    Users             ||--o{ Payments             : "receives money"
+    Users             ||--o{ Invoices             : "creates invoice"
+    Users             ||--o{ DeletedRecords       : "logs deletions"
+    Users             ||--o{ UserFormPermissions  : "has permissions"
+    Users             ||--o{ BackupLog            : "runs backup"
+
+  </div>
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'default',
+    er: { diagramPadding: 40, layoutDirection: 'TB', minEntityWidth: 130, minEntityHeight: 40, fontSize: 12 }
+  });
+</script>
+</body>
+</html>
