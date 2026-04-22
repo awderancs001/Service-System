@@ -66,6 +66,12 @@
     <Compile Include="Forms\ChangePasswordForm.Designer.cs">
       <DependentUpon>ChangePasswordForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DeletedRecordsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DeletedRecordsForm.Designer.cs">
+      <DependentUpon>DeletedRecordsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ElectricForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -147,6 +153,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\ChangePasswordForm.resx">
       <DependentUpon>ChangePasswordForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DeletedRecordsForm.resx">
+      <DependentUpon>DeletedRecordsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ElectricForm.resx">
       <DependentUpon>ElectricForm.cs</DependentUpon>

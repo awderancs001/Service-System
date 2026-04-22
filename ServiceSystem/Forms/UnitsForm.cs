@@ -250,6 +250,14 @@ namespace ServiceSystem.Forms
         // =====================================================================
         private void btnDeleteBuilding_Click(object sender, EventArgs e)
         {
+            // Admin only
+            if (SessionManager.CurrentUser.Role != "Admin")
+            {
+                MessageBox.Show("Only an administrator can delete records.",
+                    "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (lstBuildings.SelectedItem == null)
             {
                 MessageBox.Show("Please select a building first.", "No Selection",
@@ -344,6 +352,15 @@ namespace ServiceSystem.Forms
         // =====================================================================
         private void btnDeleteUnit_Click(object sender, EventArgs e)
         {
+
+            // Admin only
+            if (SessionManager.CurrentUser.Role != "Admin")
+            {
+                MessageBox.Show("Only an administrator can delete records.",
+                    "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (dgvUnits.CurrentRow == null)
             {
                 MessageBox.Show("Please select a unit first.", "No Selection",

@@ -86,7 +86,7 @@ namespace ServiceSystem.Data
                                FROM MaintenanceBills b
                                INNER JOIN Units u ON u.UnitID = b.UnitID
                                INNER JOIN Buildings bld ON bld.BuildingID = u.BuildingID
-                               WHERE b.BillMonth = @BillMonth
+                               WHERE b.BillMonth = @BillMonth AND b.IsDeleted = 0
                                ORDER BY bld.BuildingName, u.UnitName";
 
                 SqlCommand getMonth = new SqlCommand(query, conn);
@@ -120,14 +120,52 @@ namespace ServiceSystem.Data
             };
         }
 
-        public void Delete(int billID)
+        public MaintenanceBill GetByID(int billID)
         {
+            MaintenanceBill b = null;
+
             using (SqlConnection conn = DatabaseHelper.GetConnection())
             {
-                
-                string query = @"delete from MaintenanceBills where MaintenanceID  = @billID";
+                string query = @"SELECT b.MaintenanceID, b.UnitID, b.BillMonth, b.Amount, b.Description, b.CreatedDate,
+                                        u.UnitName, bld.BuildingName, u.OwnerFullName
+                                 FROM MaintenanceBills b
+                                 INNER JOIN Units u ON u.UnitID = b.UnitID
+                                 INNER JOIN Buildings bld ON bld.BuildingID = u.BuildingID
+                                 WHERE b.MaintenanceID = @BillID AND b.IsDeleted = 0";
+
                 SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@billID", billID);
+                cmd.Parameters.AddWithValue("@BillID", billID);
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                    b = ReadBill(reader);
+            }
+
+            return b;
+        }
+
+        public void Delete(int billID)
+        {
+            MaintenanceBill b = GetByID(billID);
+            if (b == null) return;
+
+            string description = string.Format(
+                "Maintenance Bill {0:N0} — Unit {1} ({2}) — {3:yyyy-MM}",
+                b.Amount, b.UnitName, b.OwnerName, b.BillMonth);
+
+            using (SqlConnection conn = DatabaseHelper.GetConnection())
+            {
+                string query = @"UPDATE MaintenanceBills SET IsDeleted = 1 WHERE MaintenanceID = @BillID;
+
+                                 INSERT INTO DeletedRecords (TableName, RecordID, RecordDescription, DeletedBy, DeletedByName)
+                                 VALUES ('MaintenanceBills', @BillID, @Description, @DeletedBy, @DeletedByName);";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@BillID",        billID);
+                cmd.Parameters.AddWithValue("@Description",   description);
+                cmd.Parameters.AddWithValue("@DeletedBy",     SessionManager.CurrentUser.UserID);
+                cmd.Parameters.AddWithValue("@DeletedByName", SessionManager.CurrentUser.FullName);
                 conn.Open();
                 cmd.ExecuteNonQuery();
             }

@@ -260,6 +260,15 @@ namespace ServiceSystem.Forms
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+
+            // Admin only
+            if (SessionManager.CurrentUser.Role != "Admin")
+            {
+                MessageBox.Show("Only an administrator can delete records.",
+                    "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (dgvPayments.CurrentRow == null)
             {
                 MessageBox.Show("Please select a row", "Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);

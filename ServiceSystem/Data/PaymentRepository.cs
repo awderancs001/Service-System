@@ -49,13 +49,15 @@ namespace ServiceSystem.Data
             using (SqlConnection conn = DatabaseHelper.GetConnection())
             {
                 string query = @"SELECT p.PaymentID, p.UnitID, p.ForMonth, p.ToMonth, p.PaymentDate,
-                                        p.Amount, p.Comment, p.CreatedDate,
-                                        u.UnitName, u.OwnerFullName, bld.BuildingName
-                                 FROM Payments p
-                                 INNER JOIN Units u ON u.UnitID = p.UnitID
-                                 INNER JOIN Buildings bld ON bld.BuildingID = u.BuildingID
-                                 WHERE MONTH(p.PaymentDate) = @Month AND YEAR(p.PaymentDate) = @Year
-                                 ORDER BY p.PaymentDate DESC";
+                                p.Amount, p.Comment, p.CreatedDate,
+                                u.UnitName, u.OwnerFullName, bld.BuildingName
+                         FROM Payments p
+                         INNER JOIN Units u ON u.UnitID = p.UnitID
+                         INNER JOIN Buildings bld ON bld.BuildingID = u.BuildingID
+                         WHERE p.IsDeleted = 0
+                           AND MONTH(p.PaymentDate) = @Month
+                           AND YEAR(p.PaymentDate) = @Year
+                         ORDER BY p.PaymentDate DESC";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@Month", month);
@@ -81,8 +83,9 @@ namespace ServiceSystem.Data
                                  FROM Payments p
                                  INNER JOIN Units u ON u.UnitID = p.UnitID
                                  INNER JOIN Buildings bld ON bld.BuildingID = u.BuildingID
-                                 WHERE u.UnitName LIKE @Keyword
-                                    OR u.OwnerFullName LIKE @Keyword
+                                 WHERE p.IsDeleted = 0
+                                   AND (u.UnitName LIKE @Keyword
+                                        OR u.OwnerFullName LIKE @Keyword)
                                  ORDER BY p.PaymentDate DESC";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
@@ -108,7 +111,8 @@ namespace ServiceSystem.Data
                                  FROM Payments p
                                  INNER JOIN Units u ON u.UnitID = p.UnitID
                                  INNER JOIN Buildings bld ON bld.BuildingID = u.BuildingID
-                                 WHERE p.PaymentID = @PaymentID";
+                                 WHERE p.PaymentID = @PaymentID
+                                   AND p.IsDeleted = 0";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@PaymentID", paymentID);
@@ -121,36 +125,37 @@ namespace ServiceSystem.Data
             return p;
         }
 
+        // -------------------------------------------------------
+        // SOFT DELETE — hides the payment and logs it in DeletedRecords
+        // Description is auto-built from the payment data so the admin
+        // can recognize what was deleted even if the unit info changes later
+        // -------------------------------------------------------
         public void Delete(int paymentID)
         {
+            // 1. Read the payment first so we can build a readable description
+            Payment p = GetByID(paymentID);
+            if (p == null) return;   // already deleted or not found
+
+            string description = string.Format(
+                "Payment {0:N0} for Unit {1} ({2}) — {3:yyyy-MM-dd}",
+                p.Amount, p.UnitName, p.OwnerFullName, p.PaymentDate);
+
+            // 2. Hide payment + log it — one SQL call, two statements
             using (SqlConnection conn = DatabaseHelper.GetConnection())
             {
+                string sql = @"UPDATE Payments SET IsDeleted = 1 WHERE PaymentID = @PaymentID;
+
+                               INSERT INTO DeletedRecords (TableName, RecordID, RecordDescription, DeletedBy, DeletedByName)
+                               VALUES ('Payments', @PaymentID, @Description, @DeletedBy, @DeletedByName);";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@PaymentID",     paymentID);
+                cmd.Parameters.AddWithValue("@Description",   description);
+                cmd.Parameters.AddWithValue("@DeletedBy",     SessionManager.CurrentUser.UserID);
+                cmd.Parameters.AddWithValue("@DeletedByName", SessionManager.CurrentUser.FullName);
                 conn.Open();
-                SqlTransaction tx = conn.BeginTransaction();
 
-                try
-                {
-                    // 1. Delete the invoice linked to this payment first (if any)
-                    //    We must delete the child (Invoice) before the parent (Payment)
-                    //    because of the foreign key constraint
-                    string deleteInvoice = "DELETE FROM Invoices WHERE PaymentID = @PaymentID";
-                    SqlCommand cmdInvoice = new SqlCommand(deleteInvoice, conn, tx);
-                    cmdInvoice.Parameters.AddWithValue("@PaymentID", paymentID);
-                    cmdInvoice.ExecuteNonQuery();
-
-                    // 2. Now delete the payment safely
-                    string deletePayment = "DELETE FROM Payments WHERE PaymentID = @PaymentID";
-                    SqlCommand cmdPayment = new SqlCommand(deletePayment, conn, tx);
-                    cmdPayment.Parameters.AddWithValue("@PaymentID", paymentID);
-                    cmdPayment.ExecuteNonQuery();
-
-                    tx.Commit();
-                }
-                catch
-                {
-                    tx.Rollback();
-                    throw;
-                }
+                cmd.ExecuteNonQuery();
             }
         }
         private Payment ReadPayment(SqlDataReader reader)

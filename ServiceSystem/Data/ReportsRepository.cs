@@ -71,13 +71,13 @@ namespace ServiceSystem.Data
                 SELECT UnitID, SUM(Amount) AS Total
                 FROM (
                     SELECT UnitID, Amount FROM MonthlyServiceBills
-                        WHERE BillMonth BETWEEN @From AND @To AND @IncludeService = 1
+                        WHERE BillMonth BETWEEN @From AND @To AND @IncludeService = 1 AND IsDeleted = 0
                     UNION ALL
                     SELECT UnitID, Amount FROM MaintenanceBills
-                        WHERE BillMonth BETWEEN @From AND @To AND @IncludeMaintenance = 1
+                        WHERE BillMonth BETWEEN @From AND @To AND @IncludeMaintenance = 1 AND IsDeleted = 0
                     UNION ALL
                     SELECT UnitID, TotalAmount FROM ElectricBills
-                        WHERE BillMonth BETWEEN @From AND @To AND @IncludeElectric = 1
+                        WHERE BillMonth BETWEEN @From AND @To AND @IncludeElectric = 1 AND IsDeleted = 0
                 ) allBills
                 GROUP BY UnitID
             ) charges ON charges.UnitID = u.UnitID
@@ -85,7 +85,7 @@ namespace ServiceSystem.Data
             LEFT JOIN (
                 SELECT UnitID, SUM(Amount) AS Total
                 FROM Payments
-                WHERE ForMonth BETWEEN @From AND @To
+                WHERE ForMonth BETWEEN @From AND @To AND IsDeleted = 0
                 GROUP BY UnitID
             ) pays ON pays.UnitID = u.UnitID
 
@@ -131,13 +131,13 @@ namespace ServiceSystem.Data
                 string sql = @"
             SELECT MIN(d) AS MinDate, MAX(d) AS MaxDate
             FROM (
-                SELECT BillMonth AS d FROM MonthlyServiceBills
+                SELECT BillMonth AS d FROM MonthlyServiceBills WHERE IsDeleted = 0
                 UNION ALL
-                SELECT BillMonth FROM MaintenanceBills
+                SELECT BillMonth FROM MaintenanceBills WHERE IsDeleted = 0
                 UNION ALL
-                SELECT BillMonth FROM ElectricBills
+                SELECT BillMonth FROM ElectricBills WHERE IsDeleted = 0
                 UNION ALL
-                SELECT ForMonth FROM Payments
+                SELECT ForMonth FROM Payments WHERE IsDeleted = 0
             ) allDates";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -167,7 +167,7 @@ namespace ServiceSystem.Data
             INNER JOIN Units u         ON u.UnitID = p.UnitID
             INNER JOIN Buildings bld   ON bld.BuildingID = u.BuildingID
             LEFT JOIN Users usr        ON usr.UserID = p.ReceivedBy
-            WHERE p.PaymentDate BETWEEN @From AND @To
+            WHERE p.PaymentDate BETWEEN @From AND @To AND p.IsDeleted = 0
             ORDER BY p.PaymentDate DESC";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
@@ -218,6 +218,7 @@ namespace ServiceSystem.Data
                 WHERE u.BuildingID = b.BuildingID
                   AND sb.BillMonth BETWEEN @From AND @To
                   AND @IncludeService = 1
+                  AND sb.IsDeleted = 0
             ), 0)
             +
             ISNULL((
@@ -226,6 +227,7 @@ namespace ServiceSystem.Data
                 WHERE u.BuildingID = b.BuildingID
                   AND mb.BillMonth BETWEEN @From AND @To
                   AND @IncludeMaintenance = 1
+                  AND mb.IsDeleted = 0
             ), 0)
             +
             ISNULL((
@@ -234,6 +236,7 @@ namespace ServiceSystem.Data
                 WHERE u.BuildingID = b.BuildingID
                   AND eb.BillMonth BETWEEN @From AND @To
                   AND @IncludeElectric = 1
+                  AND eb.IsDeleted = 0
             ), 0) AS TotalCharged,
 
             ISNULL((
@@ -241,6 +244,7 @@ namespace ServiceSystem.Data
                 INNER JOIN Units u ON u.UnitID = p.UnitID
                 WHERE u.BuildingID = b.BuildingID
                   AND p.PaymentDate BETWEEN @From AND @To
+                  AND p.IsDeleted = 0
             ), 0) AS TotalPaid
 
         FROM Buildings b

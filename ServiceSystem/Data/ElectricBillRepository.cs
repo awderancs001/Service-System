@@ -58,7 +58,8 @@ namespace ServiceSystem.Data
             {
                 string query = @"select COUNT(*) from ElectricBills
                                     where UnitID = @unitID
-                                    and BillMonth = @Month";
+                                    and BillMonth = @Month
+                                    and IsDeleted = 0";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
 
@@ -85,7 +86,7 @@ namespace ServiceSystem.Data
                                  FROM ElectricBills b
                                  INNER JOIN Units u ON u.UnitID = b.UnitID
                                  INNER JOIN Buildings bld ON bld.BuildingID = u.BuildingID
-                                 WHERE b.BillMonth = @BillMonth
+                                 WHERE b.BillMonth = @BillMonth AND b.IsDeleted = 0
                                  ORDER BY bld.BuildingName, u.UnitName";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
@@ -99,13 +100,54 @@ namespace ServiceSystem.Data
             return list;
         }
 
-        public void Delete(int electricID)
+        public ElectricBill GetByID(int electricID)
         {
+            ElectricBill b = null;
+
             using (SqlConnection conn = DatabaseHelper.GetConnection())
             {
-                string query = "DELETE FROM ElectricBills WHERE ElectricID = @ElectricID";
+                string query = @"SELECT b.ElectricID, b.UnitID, b.BillMonth,
+                                        b.BeginReading, b.EndReading, b.PricePerUnit,
+                                        b.TotalAmount, b.Notes, b.CreatedDate,
+                                        u.UnitName, bld.BuildingName, u.OwnerFullName
+                                 FROM ElectricBills b
+                                 INNER JOIN Units u ON u.UnitID = b.UnitID
+                                 INNER JOIN Buildings bld ON bld.BuildingID = u.BuildingID
+                                 WHERE b.ElectricID = @ElectricID AND b.IsDeleted = 0";
+
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@ElectricID", electricID);
+                conn.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                    b = ReadBill(reader);
+            }
+
+            return b;
+        }
+
+        public void Delete(int electricID)
+        {
+            ElectricBill b = GetByID(electricID);
+            if (b == null) return;
+
+            string description = string.Format(
+                "Electric Bill {0:N0} — Unit {1} ({2}) — {3:yyyy-MM}",
+                b.TotalAmount, b.UnitName, b.OwnerName, b.BillMonth);
+
+            using (SqlConnection conn = DatabaseHelper.GetConnection())
+            {
+                string query = @"UPDATE ElectricBills SET IsDeleted = 1 WHERE ElectricID = @ElectricID;
+
+                                 INSERT INTO DeletedRecords (TableName, RecordID, RecordDescription, DeletedBy, DeletedByName)
+                                 VALUES ('ElectricBills', @ElectricID, @Description, @DeletedBy, @DeletedByName);";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@ElectricID",   electricID);
+                cmd.Parameters.AddWithValue("@Description",   description);
+                cmd.Parameters.AddWithValue("@DeletedBy",     SessionManager.CurrentUser.UserID);
+                cmd.Parameters.AddWithValue("@DeletedByName", SessionManager.CurrentUser.FullName);
                 conn.Open();
                 cmd.ExecuteNonQuery();
             }

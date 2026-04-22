@@ -367,7 +367,7 @@ namespace ServiceSystem.Data
                            Amount AS Debt, 0 AS Paid,
                            Notes AS Note, CreatedDate
                     FROM MonthlyServiceBills
-                    WHERE UnitID = @UnitID
+                    WHERE UnitID = @UnitID AND IsDeleted = 0
 
                     UNION ALL
 
@@ -375,7 +375,7 @@ namespace ServiceSystem.Data
                            Amount, 0,
                            Description, CreatedDate
                     FROM MaintenanceBills
-                    WHERE UnitID = @UnitID
+                    WHERE UnitID = @UnitID AND IsDeleted = 0
 
                     UNION ALL
 
@@ -383,7 +383,7 @@ namespace ServiceSystem.Data
                            TotalAmount, 0,
                            Notes, CreatedDate
                     FROM ElectricBills
-                    WHERE UnitID = @UnitID
+                    WHERE UnitID = @UnitID AND IsDeleted = 0
 
                     UNION ALL
 
@@ -391,7 +391,7 @@ namespace ServiceSystem.Data
                            0, Amount,
                            Comment, CreatedDate
                     FROM Payments
-                    WHERE UnitID = @UnitID
+                    WHERE UnitID = @UnitID AND IsDeleted = 0
 
                     ORDER BY CreatedDate DESC";
 
@@ -429,7 +429,7 @@ namespace ServiceSystem.Data
                    Amount AS Debt, 0 AS Paid,
                    Notes AS Note, CreatedDate
             FROM MonthlyServiceBills
-            WHERE UnitID = @UnitID
+            WHERE UnitID = @UnitID AND IsDeleted = 0
               AND BillMonth BETWEEN @From AND @To
 
             UNION ALL
@@ -438,7 +438,7 @@ namespace ServiceSystem.Data
                    Amount, 0,
                    Description, CreatedDate
             FROM MaintenanceBills
-            WHERE UnitID = @UnitID
+            WHERE UnitID = @UnitID AND IsDeleted = 0
               AND BillMonth BETWEEN @From AND @To
 
             UNION ALL
@@ -447,7 +447,7 @@ namespace ServiceSystem.Data
                    TotalAmount, 0,
                    Notes, CreatedDate
             FROM ElectricBills
-            WHERE UnitID = @UnitID
+            WHERE UnitID = @UnitID AND IsDeleted = 0
               AND BillMonth BETWEEN @From AND @To
 
             UNION ALL
@@ -456,7 +456,7 @@ namespace ServiceSystem.Data
                    0, Amount,
                    Comment, CreatedDate
             FROM Payments
-            WHERE UnitID = @UnitID
+            WHERE UnitID = @UnitID AND IsDeleted = 0
               AND ForMonth BETWEEN @From AND @To
 
             ORDER BY CreatedDate DESC";

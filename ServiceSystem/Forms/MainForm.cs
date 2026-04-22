@@ -104,5 +104,17 @@ namespace ServiceSystem.Forms
 
             new UserManagementForm().ShowDialog();
         }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (SessionManager.CurrentUser.Role != "Admin")
+            {
+                MessageBox.Show("Only an administrator can view deleted records.",
+                    "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            new DeletedRecordsForm().ShowDialog();
+        }
     }
 }

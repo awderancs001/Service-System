@@ -18,7 +18,8 @@ namespace ServiceSystem.Data
             {
                 string sql = @"SELECT COUNT(*) FROM MonthlyServiceBills
                                WHERE UnitID = @UnitID
-                               AND BillMonth = @BillMonth";
+                               AND BillMonth = @BillMonth
+                               AND IsDeleted = 0";
 
                 SqlCommand cmd = new SqlCommand(sql, con);
                 cmd.Parameters.AddWithValue("@UnitID",    unitID);
@@ -93,7 +94,8 @@ namespace ServiceSystem.Data
                         foreach (var unit in units)
                         {
                             string checkSql = @"SELECT COUNT(*) FROM MonthlyServiceBills
-                                        WHERE UnitID = @UnitID AND BillMonth = @BillMonth";
+                                        WHERE UnitID = @UnitID AND BillMonth = @BillMonth
+                                        AND IsDeleted = 0";
 
                             SqlCommand checkCmd = new SqlCommand(checkSql, con, tx);
                             checkCmd.Parameters.AddWithValue("@UnitID", unit.unitID);
@@ -145,7 +147,7 @@ namespace ServiceSystem.Data
                                FROM MonthlyServiceBills b
                                INNER JOIN Units u ON u.UnitID = b.UnitID
                                INNER JOIN Buildings bld ON bld.BuildingID = u.BuildingID
-                               WHERE b.UnitID = @UnitID
+                               WHERE b.UnitID = @UnitID AND b.IsDeleted = 0
                                ORDER BY b.BillMonth DESC";
 
                 SqlCommand cmd = new SqlCommand(sql, con);
@@ -175,7 +177,7 @@ namespace ServiceSystem.Data
                                FROM MonthlyServiceBills b
                                INNER JOIN Units u ON u.UnitID = b.UnitID
                                INNER JOIN Buildings bld ON bld.BuildingID = u.BuildingID
-                               WHERE b.BillMonth = @BillMonth
+                               WHERE b.BillMonth = @BillMonth AND b.IsDeleted = 0
                                ORDER BY bld.BuildingName, u.UnitName";
 
                 SqlCommand cmd = new SqlCommand(sql, con);
@@ -191,16 +193,57 @@ namespace ServiceSystem.Data
         }
 
         // -------------------------------------------------------
-        // DELETE — removes a bill permanently
-        // Only allowed by admin, only if no payment linked to it
+        // GET BY ID — one bill, used to build delete description
+        // -------------------------------------------------------
+        public MonthlyServiceBill GetByID(int billID)
+        {
+            MonthlyServiceBill b = null;
+
+            using (SqlConnection con = DatabaseHelper.GetConnection())
+            {
+                string sql = @"SELECT b.BillID, b.UnitID, b.BillMonth, b.Amount, b.Notes, b.CreatedDate,
+                                      u.UnitName, bld.BuildingName, u.OwnerFullName
+                               FROM MonthlyServiceBills b
+                               INNER JOIN Units u ON u.UnitID = b.UnitID
+                               INNER JOIN Buildings bld ON bld.BuildingID = u.BuildingID
+                               WHERE b.BillID = @BillID AND b.IsDeleted = 0";
+
+                SqlCommand cmd = new SqlCommand(sql, con);
+                cmd.Parameters.AddWithValue("@BillID", billID);
+                con.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                    b = ReadBill(reader);
+            }
+
+            return b;
+        }
+
+        // -------------------------------------------------------
+        // SOFT DELETE — hides the bill and logs it in DeletedRecords
         // -------------------------------------------------------
         public void Delete(int billID)
         {
+            MonthlyServiceBill b = GetByID(billID);
+            if (b == null) return;
+
+            string description = string.Format(
+                "Service Bill {0:N0} — Unit {1} ({2}) — {3:yyyy-MM}",
+                b.Amount, b.UnitName, b.OwnerName, b.BillMonth);
+
             using (SqlConnection con = DatabaseHelper.GetConnection())
             {
-                string sql = "DELETE FROM MonthlyServiceBills WHERE BillID = @BillID";
+                string sql = @"UPDATE MonthlyServiceBills SET IsDeleted = 1 WHERE BillID = @BillID;
+
+                               INSERT INTO DeletedRecords (TableName, RecordID, RecordDescription, DeletedBy, DeletedByName)
+                               VALUES ('MonthlyServiceBills', @BillID, @Description, @DeletedBy, @DeletedByName);";
+
                 SqlCommand cmd = new SqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@BillID", billID);
+                cmd.Parameters.AddWithValue("@BillID",        billID);
+                cmd.Parameters.AddWithValue("@Description",   description);
+                cmd.Parameters.AddWithValue("@DeletedBy",     SessionManager.CurrentUser.UserID);
+                cmd.Parameters.AddWithValue("@DeletedByName", SessionManager.CurrentUser.FullName);
                 con.Open();
                 cmd.ExecuteNonQuery();
             }
