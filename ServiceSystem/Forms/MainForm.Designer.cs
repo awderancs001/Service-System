@@ -34,9 +34,6 @@
             this.lblDate = new System.Windows.Forms.Label();
             this.lblRole = new System.Windows.Forms.Label();
             this.lblCurrentUser = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.btnRefresh = new System.Windows.Forms.Button();
             this.btnLogout = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnBackup = new System.Windows.Forms.Button();
@@ -120,39 +117,6 @@
             this.lblCurrentUser.TabIndex = 0;
             this.lblCurrentUser.Text = "👤";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.Maroon;
-            this.label2.Location = new System.Drawing.Point(19, 534);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(224, 27);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Programmer: Awder Anwar";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.Maroon;
-            this.label6.Location = new System.Drawing.Point(249, 530);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(152, 27);
-            this.label6.TabIndex = 4;
-            this.label6.Text = "+9647701542773";
-            // 
-            // btnRefresh
-            // 
-            this.btnRefresh.Font = new System.Drawing.Font("RudawRegular", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRefresh.ForeColor = System.Drawing.Color.Maroon;
-            this.btnRefresh.Location = new System.Drawing.Point(451, 534);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(99, 31);
-            this.btnRefresh.TabIndex = 5;
-            this.btnRefresh.Text = "🔃 Refresh";
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            // 
             // btnLogout
             // 
             this.btnLogout.Font = new System.Drawing.Font("RudawRegular", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -187,6 +151,7 @@
             this.btnBackup.TabIndex = 13;
             this.btnBackup.Text = "📇 Backup";
             this.btnBackup.UseVisualStyleBackColor = true;
+            this.btnBackup.Click += new System.EventHandler(this.btnBackup_Click);
             // 
             // pnBody
             // 
@@ -197,14 +162,12 @@
             this.pnBody.Controls.Add(this.btnMaintenance);
             this.pnBody.Controls.Add(this.btnUnits);
             this.pnBody.Controls.Add(this.btnElectric);
-            this.pnBody.Controls.Add(this.btnDelete);
             this.pnBody.Controls.Add(this.btnReport);
-            this.pnBody.Controls.Add(this.btnSettings);
-            this.pnBody.Controls.Add(this.btnUserManagement);
             this.pnBody.Location = new System.Drawing.Point(13, 106);
             this.pnBody.Name = "pnBody";
             this.pnBody.Size = new System.Drawing.Size(917, 394);
             this.pnBody.TabIndex = 8;
+            this.pnBody.Paint += new System.Windows.Forms.PaintEventHandler(this.pnBody_Paint);
             // 
             // btnMontlyService
             // 
@@ -212,9 +175,9 @@
             this.btnMontlyService.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMontlyService.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnMontlyService.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnMontlyService.Location = new System.Drawing.Point(419, 63);
+            this.btnMontlyService.Location = new System.Drawing.Point(90, 201);
             this.btnMontlyService.Name = "btnMontlyService";
-            this.btnMontlyService.Size = new System.Drawing.Size(117, 80);
+            this.btnMontlyService.Size = new System.Drawing.Size(149, 80);
             this.btnMontlyService.TabIndex = 12;
             this.btnMontlyService.Text = "Monthly Service";
             this.btnMontlyService.UseVisualStyleBackColor = false;
@@ -226,9 +189,9 @@
             this.btnRecieveMoney.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRecieveMoney.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnRecieveMoney.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnRecieveMoney.Location = new System.Drawing.Point(32, 63);
+            this.btnRecieveMoney.Location = new System.Drawing.Point(90, 63);
             this.btnRecieveMoney.Name = "btnRecieveMoney";
-            this.btnRecieveMoney.Size = new System.Drawing.Size(117, 80);
+            this.btnRecieveMoney.Size = new System.Drawing.Size(149, 80);
             this.btnRecieveMoney.TabIndex = 12;
             this.btnRecieveMoney.Text = "Recieve Money";
             this.btnRecieveMoney.UseVisualStyleBackColor = false;
@@ -240,9 +203,9 @@
             this.btnMaintenance.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMaintenance.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnMaintenance.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnMaintenance.Location = new System.Drawing.Point(788, 63);
+            this.btnMaintenance.Location = new System.Drawing.Point(410, 201);
             this.btnMaintenance.Name = "btnMaintenance";
-            this.btnMaintenance.Size = new System.Drawing.Size(126, 80);
+            this.btnMaintenance.Size = new System.Drawing.Size(149, 80);
             this.btnMaintenance.TabIndex = 11;
             this.btnMaintenance.Text = "Maintenance";
             this.btnMaintenance.UseVisualStyleBackColor = false;
@@ -254,9 +217,9 @@
             this.btnUnits.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnUnits.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnUnits.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnUnits.Location = new System.Drawing.Point(226, 63);
+            this.btnUnits.Location = new System.Drawing.Point(708, 63);
             this.btnUnits.Name = "btnUnits";
-            this.btnUnits.Size = new System.Drawing.Size(117, 80);
+            this.btnUnits.Size = new System.Drawing.Size(149, 80);
             this.btnUnits.TabIndex = 11;
             this.btnUnits.Text = "Units";
             this.btnUnits.UseVisualStyleBackColor = false;
@@ -268,9 +231,9 @@
             this.btnElectric.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnElectric.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnElectric.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnElectric.Location = new System.Drawing.Point(610, 63);
+            this.btnElectric.Location = new System.Drawing.Point(708, 201);
             this.btnElectric.Name = "btnElectric";
-            this.btnElectric.Size = new System.Drawing.Size(117, 80);
+            this.btnElectric.Size = new System.Drawing.Size(149, 80);
             this.btnElectric.TabIndex = 10;
             this.btnElectric.Text = "Electric";
             this.btnElectric.UseVisualStyleBackColor = false;
@@ -282,11 +245,11 @@
             this.btnDelete.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDelete.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnDelete.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnDelete.Location = new System.Drawing.Point(543, 218);
+            this.btnDelete.Location = new System.Drawing.Point(328, 534);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(117, 80);
+            this.btnDelete.Size = new System.Drawing.Size(99, 31);
             this.btnDelete.TabIndex = 9;
-            this.btnDelete.Text = "Deleted Records";
+            this.btnDelete.Text = "Deleted";
             this.btnDelete.UseVisualStyleBackColor = false;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
@@ -296,9 +259,9 @@
             this.btnReport.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnReport.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnReport.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnReport.Location = new System.Drawing.Point(90, 218);
+            this.btnReport.Location = new System.Drawing.Point(410, 63);
             this.btnReport.Name = "btnReport";
-            this.btnReport.Size = new System.Drawing.Size(117, 80);
+            this.btnReport.Size = new System.Drawing.Size(149, 80);
             this.btnReport.TabIndex = 9;
             this.btnReport.Text = "Report";
             this.btnReport.UseVisualStyleBackColor = false;
@@ -310,9 +273,9 @@
             this.btnSettings.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSettings.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnSettings.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnSettings.Location = new System.Drawing.Point(738, 218);
+            this.btnSettings.Location = new System.Drawing.Point(450, 534);
             this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(126, 80);
+            this.btnSettings.Size = new System.Drawing.Size(99, 31);
             this.btnSettings.TabIndex = 8;
             this.btnSettings.Text = "Settings";
             this.btnSettings.UseVisualStyleBackColor = false;
@@ -324,11 +287,11 @@
             this.btnUserManagement.Font = new System.Drawing.Font("RudawRegular", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnUserManagement.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.btnUserManagement.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnUserManagement.Location = new System.Drawing.Point(319, 218);
+            this.btnUserManagement.Location = new System.Drawing.Point(190, 534);
             this.btnUserManagement.Name = "btnUserManagement";
-            this.btnUserManagement.Size = new System.Drawing.Size(117, 80);
+            this.btnUserManagement.Size = new System.Drawing.Size(99, 31);
             this.btnUserManagement.TabIndex = 8;
-            this.btnUserManagement.Text = "User Management";
+            this.btnUserManagement.Text = "User ";
             this.btnUserManagement.UseVisualStyleBackColor = false;
             this.btnUserManagement.Click += new System.EventHandler(this.btnUserManagement_Click);
             // 
@@ -338,14 +301,14 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(1001, 592);
-            this.Controls.Add(this.label6);
             this.Controls.Add(this.btnBackup);
             this.Controls.Add(this.pnBody);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnLogout);
-            this.Controls.Add(this.btnRefresh);
+            this.Controls.Add(this.btnDelete);
+            this.Controls.Add(this.btnUserManagement);
             this.Controls.Add(this.pnTop);
+            this.Controls.Add(this.btnSettings);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "MainForm";
@@ -357,7 +320,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pblog)).EndInit();
             this.pnBody.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -368,9 +330,6 @@
         private System.Windows.Forms.Label lblRole;
         private System.Windows.Forms.Label lblCurrentUser;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.Button btnLogout;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Panel pnBody;

@@ -25,9 +25,12 @@ namespace ServiceSystem.Forms
             lblDate.Text = "📅  " + DateTime.Now.ToString("dddd, dd MMMM yyyy");
 
             // Hide admin-only buttons for non-admin users
-            //bool isAdmin = SessionManager.CurrentUser.Role == "Admin";
-            //btnUserManagement.Visible = isAdmin;
-            //btnSettings.Visible = isAdmin;
+            bool isAdmin = SessionManager.CurrentUser.Role == "Admin";
+            btnUserManagement.Visible = isAdmin;
+            btnSettings.Visible = isAdmin;
+            btnBackup.Visible = isAdmin;
+            btnDelete.Visible = isAdmin;
+
         }
 
         private void btnLogout_Click(object sender, EventArgs e)
@@ -107,14 +110,32 @@ namespace ServiceSystem.Forms
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            // Only Admin can manage users
             if (SessionManager.CurrentUser.Role != "Admin")
             {
-                MessageBox.Show("Only an administrator can view deleted records.",
+                MessageBox.Show("Only an administrator can manage users.",
                     "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             new DeletedRecordsForm().ShowDialog();
+        }
+
+        private void btnBackup_Click(object sender, EventArgs e)
+        {
+            if (SessionManager.CurrentUser.Role != "Admin")
+            {
+                MessageBox.Show("Only an administrator can perform backup operations.",
+                    "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            new BackupForm().ShowDialog();
+        }
+
+        private void pnBody_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
